@@ -97,6 +97,7 @@ module.exports = function defineGrammar(dialect) {
       [$.pattern, $.primary_type],
 
       [$.optional_tuple_parameter, $.primary_type],
+      [$.optional_tuple_parameter, $.predefined_type],
       [$.rest_pattern, $.primary_type, $.primary_expression],
 
       [$.object, $.object_type],
@@ -757,12 +758,19 @@ module.exports = function defineGrammar(dialect) {
       ),
 
       tuple_parameter: $ => seq(
-        field('name', choice($.identifier, $.rest_pattern)),
+        field('name', choice(
+          $.identifier,
+          alias($._reserved_identifier, $.identifier),
+          $.rest_pattern,
+        )),
         field('type', $.type_annotation),
       ),
 
       optional_tuple_parameter: $ => seq(
-        field('name', $.identifier),
+        field('name', choice(
+          $.identifier,
+          alias($._reserved_identifier, $.identifier),
+        )),
         '?',
         field('type', $.type_annotation),
       ),
@@ -1121,6 +1129,8 @@ module.exports = function defineGrammar(dialect) {
         'object',
         'new',
         'readonly',
+        'abstract',
+        'unique',
         previous,
       ),
     },

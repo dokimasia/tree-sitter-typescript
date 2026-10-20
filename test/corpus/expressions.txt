@@ -183,10 +183,17 @@ The 'less than' operator
 i < foo.length;
 i < type.length;
 i < string.length;
+i < unique.length;
 
 ---
 
 (program
+  (expression_statement
+    (binary_expression
+      (identifier)
+      (member_expression
+        (identifier)
+        (property_identifier))))
   (expression_statement
     (binary_expression
       (identifier)

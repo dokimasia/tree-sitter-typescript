@@ -116,6 +116,30 @@ type T = { -readonly [K in keyof T]: any }
           (predefined_type))))))
 
 =======================================
+Object types with reserved words as keys
+=======================================
+
+type T = { abstract: Set<string>; unique: number };
+
+---
+
+(program
+  (type_alias_declaration
+    (type_identifier)
+    (object_type
+      (property_signature
+        (property_identifier)
+        (type_annotation
+          (generic_type
+            (type_identifier)
+            (type_arguments
+              (predefined_type)))))
+      (property_signature
+        (property_identifier)
+        (type_annotation
+          (predefined_type))))))
+
+=======================================
 Object types with call signatures
 =======================================
 
@@ -1592,6 +1616,7 @@ type t = [string?, ...B]
 
 // labeled elements
 type t = [a: A, b?: B, ...c: C[]]
+type t = [symbol: A, any?: B]
 
 ---
 
@@ -1644,7 +1669,18 @@ type t = [a: A, b?: B, ...c: C[]]
           (identifier))
         (type_annotation
           (array_type
-            (type_identifier)))))))
+            (type_identifier))))))
+  (type_alias_declaration
+    (type_identifier)
+    (tuple_type
+      (required_parameter
+        (identifier)
+        (type_annotation
+          (type_identifier)))
+      (optional_parameter
+        (identifier)
+        (type_annotation
+          (type_identifier))))))
 
 ==================================
 Conditional types
