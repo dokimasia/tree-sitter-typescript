@@ -123,7 +123,6 @@ static bool scan_automatic_semicolon(TSLexer *lexer, const bool *valid_symbols, 
         case '*':
         case '%':
         case '>':
-        case '<':
         case '=':
         case '?':
         case '^':
@@ -144,6 +143,14 @@ static bool scan_automatic_semicolon(TSLexer *lexer, const bool *valid_symbols, 
             // the validity of a binary operator token.
         case '(':
         case '[':
+            if (valid_symbols[LOGICAL_OR]) {
+                return false;
+            }
+            break;
+
+            // Don't insert a semicolon before a '<', unless we're parsing a type. A type does not take type
+            // arguments after a line break, so the '<' opens the type parameters of the next member.
+        case '<':
             if (valid_symbols[LOGICAL_OR]) {
                 return false;
             }
