@@ -4867,6 +4867,11 @@
     }
   },
   {
+    "type": "string_fragment",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "subscript_expression",
     "named": true,
     "fields": {
@@ -6087,11 +6092,11 @@
   },
   {
     "type": "number",
-    "named": true
+    "named": false
   },
   {
     "type": "number",
-    "named": false
+    "named": true
   },
   {
     "type": "object",
@@ -6172,10 +6177,6 @@
   {
     "type": "string",
     "named": false
-  },
-  {
-    "type": "string_fragment",
-    "named": true
   },
   {
     "type": "super",

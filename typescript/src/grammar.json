@@ -3108,6 +3108,15 @@
                   {
                     "type": "SYMBOL",
                     "name": "html_character_reference"
+                  },
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_jsx_string_ampersand"
+                    },
+                    "named": true,
+                    "value": "string_fragment"
                   }
                 ]
               }
@@ -3142,6 +3151,15 @@
                   {
                     "type": "SYMBOL",
                     "name": "html_character_reference"
+                  },
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_jsx_string_ampersand"
+                    },
+                    "named": true,
+                    "value": "string_fragment"
                   }
                 ]
               }
@@ -7566,6 +7584,17 @@
           ]
         }
       ]
+    },
+    "_jsx_string_ampersand": {
+      "type": "IMMEDIATE_TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "STRING",
+          "value": "&"
+        }
+      }
     },
     "_import_identifier": {
       "type": "CHOICE",

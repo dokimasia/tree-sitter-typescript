@@ -440,6 +440,56 @@ Type arguments in JSX
       (jsx_text)
       (jsx_closing_element))))
 
+==========================================================
+Ampersands in JSX
+:language(tsx)
+==========================================================
+
+<p>carefully & to the letter</p>;
+<p>Tom &amp; Jerry</p>;
+<a title="E&xit" alt='a&b' href="?a=1&amp;b=2" />;
+
+---
+
+(program
+  (expression_statement
+    (jsx_element
+      (jsx_opening_element
+        (identifier))
+      (jsx_text)
+      (jsx_closing_element
+        (identifier))))
+  (expression_statement
+    (jsx_element
+      (jsx_opening_element
+        (identifier))
+      (jsx_text)
+      (html_character_reference)
+      (jsx_text)
+      (jsx_closing_element
+        (identifier))))
+  (expression_statement
+    (jsx_self_closing_element
+      (identifier)
+      (jsx_attribute
+        (property_identifier)
+        (string
+          (string_fragment)
+          (string_fragment)
+          (string_fragment)))
+      (jsx_attribute
+        (property_identifier)
+        (string
+          (string_fragment)
+          (string_fragment)
+          (string_fragment)))
+      (jsx_attribute
+        (property_identifier)
+        (string
+          (string_fragment)
+          (html_character_reference)
+          (string_fragment))))))
+
 ==================================
 Ternary expression
 ==================================

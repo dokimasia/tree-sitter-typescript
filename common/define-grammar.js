@@ -272,6 +272,31 @@ module.exports = function defineGrammar(dialect) {
         '/>',
       )),
 
+      // tsx only. An `&` that does not open a character reference is part of
+      // the string, as in "E&xit".
+      _jsx_string: $ => choice(
+        seq(
+          '"',
+          repeat(choice(
+            alias($.unescaped_double_jsx_string_fragment, $.string_fragment),
+            $.html_character_reference,
+            alias($._jsx_string_ampersand, $.string_fragment),
+          )),
+          '"',
+        ),
+        seq(
+          '\'',
+          repeat(choice(
+            alias($.unescaped_single_jsx_string_fragment, $.string_fragment),
+            $.html_character_reference,
+            alias($._jsx_string_ampersand, $.string_fragment),
+          )),
+          '\'',
+        ),
+      ),
+
+      _jsx_string_ampersand: _ => token.immediate(prec(-1, '&')),
+
       export_specifier: (_, previous) => seq(
         optional(choice('type', 'typeof')),
         previous,

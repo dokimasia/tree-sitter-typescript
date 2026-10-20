@@ -273,6 +273,37 @@ static bool scan_closing_comment(TSLexer *lexer) {
     return true;
 }
 
+static bool is_ascii_letter(int32_t c) { return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
+
+// Advances past an `&` and the rest of a character reference, and returns whether the reference is complete. A
+// complete reference is what html_character_reference matches: a name of 1 to 30 letters, a decimal number of 1 to 5
+// digits after `#`, or a hexadecimal number of 1 to 6 digits after `#x`, and then a `;`.
+static bool scan_character_reference(TSLexer *lexer) {
+    advance(lexer);
+    unsigned length = 0;
+    if (lexer->lookahead == '#') {
+        advance(lexer);
+        if (lexer->lookahead == 'x' || lexer->lookahead == 'X') {
+            advance(lexer);
+            while (length < 6 && iswxdigit(lexer->lookahead)) {
+                advance(lexer);
+                length++;
+            }
+        } else {
+            while (length < 5 && iswdigit(lexer->lookahead)) {
+                advance(lexer);
+                length++;
+            }
+        }
+    } else {
+        while (length < 30 && is_ascii_letter(lexer->lookahead)) {
+            advance(lexer);
+            length++;
+        }
+    }
+    return length > 0 && lexer->lookahead == ';';
+}
+
 static bool scan_jsx_text(TSLexer *lexer) {
     // saw_text will be true if we see any non-whitespace content, or any whitespace content that is not a newline and
     // does not immediately follow a newline.
@@ -282,7 +313,20 @@ static bool scan_jsx_text(TSLexer *lexer) {
     bool at_newline = false;
 
     while (lexer->lookahead != 0 && lexer->lookahead != '<' && lexer->lookahead != '>' && lexer->lookahead != '{' &&
-           lexer->lookahead != '}' && lexer->lookahead != '&') {
+           lexer->lookahead != '}') {
+        // A character reference ends the text, so that html_character_reference matches it. Any other `&` is text,
+        // as in `a & b`.
+        if (lexer->lookahead == '&') {
+            lexer->mark_end(lexer);
+            if (scan_character_reference(lexer)) {
+                lexer->result_symbol = JSX_TEXT;
+                return saw_text;
+            }
+            saw_text = true;
+            at_newline = false;
+            continue;
+        }
+
         bool is_wspace = iswspace(lexer->lookahead);
         if (lexer->lookahead == '\n') {
             at_newline = true;
@@ -310,6 +354,7 @@ static bool scan_jsx_text(TSLexer *lexer) {
         advance(lexer);
     }
 
+    lexer->mark_end(lexer);
     lexer->result_symbol = JSX_TEXT;
     return saw_text;
 }
