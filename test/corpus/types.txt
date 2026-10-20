@@ -1497,6 +1497,39 @@ type t = readonly (readonly a[]) []
               (type_identifier))))))))
 
 ==================================
+Read-only arrays in unions and intersections
+==================================
+
+type t = readonly a[] | b
+type t = readonly a[] & b
+type t = b | readonly a[]
+
+---
+
+(program
+  (type_alias_declaration
+    (type_identifier)
+    (union_type
+      (readonly_type
+        (array_type
+          (type_identifier)))
+      (type_identifier)))
+  (type_alias_declaration
+    (type_identifier)
+    (intersection_type
+      (readonly_type
+        (array_type
+          (type_identifier)))
+      (type_identifier)))
+  (type_alias_declaration
+    (type_identifier)
+    (union_type
+      (type_identifier)
+      (readonly_type
+        (array_type
+          (type_identifier))))))
+
+==================================
 Tuple types
 ==================================
 
