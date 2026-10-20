@@ -1,4 +1,4 @@
-module github.com/tree-sitter/tree-sitter-typescript
+module github.com/dokimasia/tree-sitter-typescript
 
 go 1.22.0
 
