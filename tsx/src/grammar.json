@@ -11320,6 +11320,10 @@
       "template_string"
     ],
     [
+      "call_expression",
+      "_type_query_call_expression"
+    ],
+    [
       "jsx_opening_element",
       "type_parameter"
     ],
@@ -11873,16 +11877,6 @@
       {
         "type": "SYMBOL",
         "name": "pattern"
-      }
-    ],
-    [
-      {
-        "type": "SYMBOL",
-        "name": "call_expression"
-      },
-      {
-        "type": "SYMBOL",
-        "name": "_type_query_call_expression"
       }
     ],
     [
